@@ -1,0 +1,4 @@
+# terraform state and variables
+terraform.tfvars
+terraform.tfstate*
+.terraform*
