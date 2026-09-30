@@ -1,7 +1,6 @@
 # Tiny TorchTPU
 
-This repo contains my attempt at building a torch.compile backend for Tensor Processing Units (TPUs) that implements static compilation through PyTorch -> StableHLO -> TPU binary lowering path. TorchTPU is the name of a production implementation of this lowering path + a native TPU device backend in PyTorch that is currently under development [1].
-
+This repo contains an educational proof of concept for a torch.compile backend targeting Tensor Processing Units (TPUs). It will implement static compilation through PyTorch -> StableHLO -> TPU binary lowering path for a small subset of inference operations, starting with RMSNorm. This allows us to explore compiler design and the tradeoff between usability and performance when developing an ML software stack.
 
 ## Motivation
 
