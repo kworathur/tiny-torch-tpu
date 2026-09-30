@@ -81,7 +81,7 @@ resource "google_compute_firewall" "allow_ssh" {
     protocol = "tcp"
     ports    = ["22"]
   }
-  source_ranges = ["35.235.240.0/20"]  # IAP TCP forwarding range, requires --tunnel-through-iap flag
+  source_ranges = ["${var.client_ip}"]  # IAP TCP forwarding range, requires --tunnel-through-iap flag
 }
 
 resource "google_service_account" "sa" {
@@ -97,12 +97,13 @@ resource "google_project_iam_member" "tpu_admin_binding" {
   member = "serviceAccount:${google_service_account.sa.email}"
 }
 
+# prevent unexpected costs from VMs left running by accident
 resource "google_cloud_scheduler_job" "tpu_deletion_job" {
   name = "delete-${google_tpu_v2_vm.tpu.name}-job"
   project = "${var.project_id}"
   region = "${var.region}"
   description = "Deletes spot TPU instance ${google_tpu_v2_vm.tpu.name} after time limit"
-  schedule    = "35 * * * *" # Runs every 4 hours
+  schedule    = "* */4 * * *" # Runs every 4 hours
   time_zone   = "UTC"
 
   # Target the Cloud TPU v2 REST API to delete the specific TPU instance
